@@ -1,33 +1,22 @@
 <?php
 	function isLeapYear($year) {
 		if (($year % 4 == 0) && ($year % 100 != 0) || $year % 400 == 0) {
-			print("true" . "\n");
 			return true;
-
 		} else {
-			print("not leap year" . "\n");
 			return false;
 		}
 	}
 
 	function getDayOfTheWeek($year, $month, $day) {
 		$lastTwoDigits = $year % 100;
-		print($year . " year \n" . "last two digits: " . $lastTwoDigits . "\n");
-
 		$remainder = $lastTwoDigits % 12;
-		print("remainder: " . $remainder . "\n");
-
 		$howManyFours = ($remainder - ($remainder % 4)) / 4;
-		print("how Many Fours: " . $howManyFours . "\n");
-
 		$howManyTwelve = ($lastTwoDigits - $remainder) / 12;
-		print("how Many Twelve: " . $howManyTwelve . "\n");
 
 		if ($month == 1 || $month == 10) {
 			$monthCode = 1;		
 			if ($month == 1 && isLeapYear($year)) {
 				$monthCode = $monthCode - 1;
-				print("monthCode - 1 = " . $monthCode . "\n");
 			}	
 		} elseif ($month == 4 || $month == 7) {
 			$monthCode = 0;			
@@ -35,7 +24,6 @@
 			$monthCode = 4;	
 			if ($month == 2 && isLeapYear($year)) {
 				$monthCode = $monthCode - 1;
-				print("monthCode - 1 =" . $monthCode . "\n");
 			}		
 		} elseif ($month == 9 || $month == 12 ) {
 			$monthCode = 6;			
@@ -47,27 +35,43 @@
 			$monthCode = 5;			
 		}
 	
-		if ($year == 1600 || $year == 2000) {
+		$firstTwoDigits = substr($year, 0, 2);
+		if ($firstTwoDigits == 16 || $firstTwoDigits == 20) {
 			$monthCode = $monthCode + 6;
-			print("+6: " . $monthCode . "\n");
-
-		} elseif ($year == 1700 || $year == 2100 ) {
+		} elseif ($firstTwoDigits == 17 || $firstTwoDigits == 21) {
 			$monthCode = $monthCode + 4;
-			print("+4: " . $monthCode . "\n");
-		} elseif ($year == 1800) {
+		} elseif ($firstTwoDigits == 18) {
 			$monthCode = $monthCode + 2;
-			print("+2: " . $monthCode . "\n");
 		}
-		print("month code: " . $monthCode . "\n");
-		$week = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Friday"];
-		$total = $howManyTwelve + $remainder + $howManyFours + $day + $monthCode;
-		print("total number: " . $total . "\n");
-		
+
+		$week = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday" , "Friday"];
+		$total = $howManyTwelve + $remainder + $howManyFours + $day + $monthCode;		
 		$dayOfTheWeek = ($howManyTwelve + $remainder + $howManyFours + $day + $monthCode) % 7;
-		print("day Of The Week: " . $week[$dayOfTheWeek] . "\n");
-		
+		return $week[$dayOfTheWeek];
+		// print(" is a " . $week[$dayOfTheWeek]);		
 	}
-	// getDayOfTheWeek(2100, 3, 16);
-	getDayOfTheWeek(2022, 5, 22);
-	isLeapYear(2022);
+
+	function makeCalendar($year) {
+		$months = range(1,12);
+		foreach ($months as $month) {
+			if ($month == 1 || $month == 3 ||$month == 5 || $month == 7 || $month == 9 || $month == 10 || $month == 12) {
+				$days = range(1, 31);
+			} elseif($month == 4 || $month == 6 ||$month == 9 || $month == 11) {
+				$days = range(1, 30);
+			} else {
+				if (isLeapYear($year)) {
+					$days = range(1, 29);
+				} else {
+					$days = range(1, 28);
+				}
+			}
+			foreach ($days as $day) {
+				$eachWeek = getDayOfTheWeek($year, $month, $day);
+				echo "$month" . "-" . "$day" . "-" . "$year" . " is a " . "$eachWeek" . "\n";
+			}
+		}
+	}
+
+	// for each day in 2022
+	makeCalendar(2022);
 ?>
