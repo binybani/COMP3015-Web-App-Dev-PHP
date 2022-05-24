@@ -1,4 +1,5 @@
 <?php
+	// 윤년을 확인하는 함수
 	function isLeapYear($year) {
 		if (($year % 4 == 0) && ($year % 100 != 0) || $year % 400 == 0) {
 			return true;
@@ -6,11 +7,18 @@
 			return false;
 		}
 	}
+	// 어떻게 할 줄 아직 모르지만 처음에 빈 선언으로 만들어둠.
+	function handleOffset(){
 
+	}
+//  TODO: Array of day of week
+// $days = ["mon", "tue"]
+	// ASSUMPTION: it is safe to use numbers rather than words for the month parameter
 	function getDayOfTheWeek($year, $month, $day) {
 		$lastTwoDigits = $year % 100;
 		$remainder = $lastTwoDigits % 12;
 		$howManyFours = ($remainder - ($remainder % 4)) / 4;
+		// floor 사용해서 동일한 값 나오게 하면 더 간단하게 할수있다고 하니 시도해 보기
 		$howManyTwelve = ($lastTwoDigits - $remainder) / 12;
 
 		if ($month == 1 || $month == 10) {
