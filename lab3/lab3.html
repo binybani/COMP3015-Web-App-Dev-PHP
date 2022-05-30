@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3 lab</title>
+</head>
+<body>
+	<form action="./lab3.php" method="post">
+		<fieldset>
+			<legend>Please fill out this form</legend>
+			
+			<input type="text" name="username" id="username" />
+			<label for="username">User Name</label><br />
+
+			<input type="password" name="password" id="password" />
+			<label for="password">Password</label><br />
+
+			<input type="text" name="student-number" id="student-number" />
+			<label for="student-number">Student Number</label><br />
+
+			<p>Please select your gender:</p>
+			<input type="radio" id="male" name="gender" value="male">
+			<label for="male">Male</label><br>
+			<input type="radio" id="female" name="gender" value="female">
+			<label for="female">Female</label><br>  
+			<div><br></div>
+
+			<fieldset>
+        <legend>Which computer languages are you studying:</legend>
+
+        <input type="checkbox" name="languages[]" id="cpp" value="cpp"/>
+        <label for="cpp">C++</label><br />
+
+				<input type="checkbox" name="languages[]" id="c-sharp" value="c-sharp"/>
+				<label for="c-sharp">C#</label><br> 
+
+				<input type="checkbox" name="languages[]" id="javascript" value="javascript"/>
+				<label for="javascript">Javascript </label><br>
+
+				<input type="checkbox" name="languages[]" id="java" value="java"/>
+				<label for="java">Java </label><br>
+
+				<input type="checkbox" name="languages[]" id="perl" value="perl"/>
+				<label for="perl">Perl </label><br>
+
+				<input type="checkbox" name="languages[]" id="php" value="php"/>
+				<label for="php">PHP </label><br>
+
+				<input type="checkbox" name="languages[]" id="python" value="python"/>
+				<label for="python">Python </label><br>
+				
+      </fieldset>
+		</fieldset>
+		<input type="submit" value="Submit" />
+	</form>
+    
+</body>
+</html>
