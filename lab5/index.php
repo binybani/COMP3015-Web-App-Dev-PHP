@@ -1,3 +1,34 @@
+<?php 
+ $error = '';  
+ if(isset($_POST["submit"]))  
+ {  
+	if(empty($_POST["course-name"]))  
+	{  
+			 $error = "<label class='text-danger'>Enter Name</label>";  
+	} 
+	else {
+	if(file_exists('courses.json'))  
+	{  
+		$current_data = file_get_contents('courses.json');  
+		$array_data = json_decode($current_data, true);  
+		$extra = array(  
+			$_POST["course-name"] => array(
+				'completed' => false,
+			),
+		);  
+		$array_data[$_POST["course-name"]] = $extra;  
+		$final_data = json_encode($array_data);
+		file_put_contents('courses.json', $final_data);   
+	}  
+	else  
+	{  
+				$error = 'JSON File not exits';  
+	}  
+	}
+}
+$courses = json_decode(file_get_contents('./courses.json'), true);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -110,21 +141,25 @@
 <body>
 	<h1>My Classes</h1>
 	<div>
-		<form enctype="multipart/form-data" action="" method="post">
+		<form enctype="multipart/form-data" action="" method="post"> 				
 			<div>
-				<input type="text" id="texto" placeholder="ex-COMP3015">
-				<button type="button" id="btn" class="add-btn">ADD</button>
+				<input type="text" id="course-name" name="course-name" placeholder="ex-COMP3015">
+				<input type="submit" name="submit" value="ADD" class="add-btn btn btn-info" /><br />
 			</div>
-			<ul id="ul"></ul>
 		</form>
 	</div>
-
+	<table>
+    <?php foreach($courses as $key=>$course): ?>
+    <tr>
+      <td><input type="checkbox" name = "key_name[]" value="false"><?= $key; ?><input type="button" class="delete-btn" name="delete-btn" value="DELETE"></td>
+    </tr>
+    <?php endforeach; ?>
+	</table>
 </body>
 
 </html>
 <script>
-	// document.querySelectorAll("table tr:nth-child(2) td").forEach(function(node) {
-	document.querySelectorAll("ul").forEach(function(node) {
+	document.querySelectorAll("#id, .td").forEach(function(node) {
 		node.ondblclick = function() {
 			var val = this.innerHTML;
 			var input = document.createElement("input");
@@ -139,30 +174,14 @@
 		}
 	});
 
-	function addItem() {
-		var ul = document.getElementById('ul'); //ul
-		var li = document.createElement('li'); //li
-		var p = document.createElement('p');
-		var button = document.createElement("BUTTON");
-		button.classList.add('delete-btn');
-		var label = document.createElement('label');
-		label.classList.add('class-checkbox');
-		var t = document.createTextNode("Delete");
-		var checkbox = document.createElement('input');
-
-		checkbox.type = "checkbox";
-		checkbox.value = 1;
-		checkbox.name = "todo[]";
-
-		li.appendChild(checkbox);
-		var text = document.getElementById('texto');
-		li.appendChild(document.createTextNode(text.value));
-
-		li.appendChild(button);
-		button.appendChild(t);
-		ul.appendChild(li);
-
+	var checkboxes = document.querySelectorAll();
+	for (let index = 0; index < checkboxes.length; indexs++) {
+		const element = checkboxes[index];
+		if(element.checked) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
-	var button = document.getElementById('btn');
-	button.onclick = addItem
 </script>
