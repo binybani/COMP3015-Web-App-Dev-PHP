@@ -11,18 +11,16 @@
 	{  
 		$current_data = file_get_contents('courses.json');  
 		$array_data = json_decode($current_data, true);  
-		$extra = array(  
-			$_POST["course-name"] => array(
-				'completed' => false,
-			),
+		$extra = array(
+			'completed' => false,
 		);  
-		$array_data[$_POST["course-name"]] = $extra;  
-		$final_data = json_encode($array_data);
+		$array_data[$_POST["course-name"]] = $extra;
+		$final_data = json_encode($array_data, JSON_PRETTY_PRINT);
 		file_put_contents('courses.json', $final_data);   
 	}  
 	else  
 	{  
-				$error = 'JSON File not exits';  
+		$error = 'JSON File not exits';  
 	}  
 	}
 }
@@ -151,37 +149,52 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 	<table>
     <?php foreach($courses as $key=>$course): ?>
     <tr>
-      <td><input type="checkbox" name = "key_name[]" value="false"><?= $key; ?><input type="button" class="delete-btn" name="delete-btn" value="DELETE"></td>
+      <td id="course_list">
+				<input type="checkbox" name="checkboxes" value="false">
+				<span id="editable"><?= $key; ?></span>
+				<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>
+				<!-- <input type="button" class="delete-btn" name="delete-btn" value="DELETE"> -->
+			</td>
     </tr>
-    <?php endforeach; ?>
+    <?php endforeach; 
+		// if($_POST["course-name"] != $key)  
+		// {  
+		// 	$current_data = file_get_contents('courses.json');  
+		// 	$array_data = json_decode($current_data, true);  
+
+		// 	$array_data[$_POST["course-name"]] = $key;
+		// 	$final_data = json_encode($array_data, JSON_PRETTY_PRINT);
+		// 	file_put_contents('courses.json', $final_data);   
+		// }  
+		?>
 	</table>
 </body>
 
 </html>
 <script>
-	document.querySelectorAll("#id, .td").forEach(function(node) {
-		node.ondblclick = function() {
-			var val = this.innerHTML;
-			var input = document.createElement("input");
-			input.value = val;
-			input.onblur = function() {
-				var val = this.value;
-				this.parentNode.innerHTML = val;
-			}
-			this.innerHTML = "";
-			this.appendChild(input);
-			input.focus();
+document.querySelectorAll("#editable").forEach(function(node){
+	node.ondblclick=function(){
+		var val=this.innerHTML;
+		var input=document.createElement("input");
+		input.value=val;
+		input.onblur=function(){
+			var val=this.value;
+			this.parentNode.innerHTML=val;
 		}
-	});
-
-	var checkboxes = document.querySelectorAll();
-	for (let index = 0; index < checkboxes.length; indexs++) {
-		const element = checkboxes[index];
-		if(element.checked) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		this.innerHTML="";
+		this.appendChild(input);
+		input.focus();
 	}
+});
+function removeList() {
+  var row = document.getElementById('course_list');
+  if (row) {
+    row.parentNode.removeChild(row);
+		<?php
+				$current_data = file_get_contents('courses.json');  
+				$array_data = json_decode($current_data, true);  
+		
+		?>
+  }
+}
 </script>
