@@ -1,10 +1,10 @@
 <?php 
  $error = '';  
- if(isset($_POST["submit"]))  
+ if(isset($_POST["add"]))  
  {  
 	if(empty($_POST["course-name"]))  
 	{  
-			 $error = "<label class='text-danger'>Enter Name</label>";  
+		$error = "<label class='text-danger'>Enter Course Name!!</label>";  
 	} 
 	else {
 	if(file_exists('courses.json'))  
@@ -25,6 +25,12 @@
 	}
 }
 $courses = json_decode(file_get_contents('./courses.json'), true);
+// if(isset($_POST["checkboxes"]))
+// {
+// 	echo "checked";
+// } else {
+// 	echo "unchecked";
+// }
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +64,7 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 			padding-left: 10px;
 		}
 
-		.add-btn {
+		.add-btn, .upload-btn {
 			background-color: #000000;
 			border: none;
 			color: white;
@@ -129,7 +135,13 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 			font-weight: bold;
 			font-size: x-large;
 		}
+		
+		input[type=checkbox]:checked + label.strikethrough {
+			color: red;
+			text-decoration:line-through;
+		}
 	</style>
+
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -137,36 +149,39 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 </head>
 
 <body>
-	<h1>My Classes</h1>
 	<div>
-		<form enctype="multipart/form-data" action="" method="post"> 				
+		<!-- MUST POST -->
+		<form enctype="multipart/form-data" action="lab5/results.php" method="post">
+			<div>
+				<label for="">Cover Picture</label>
+				<!-- input type MUST file -->
+				<input type="file" name="cover_picture">
+			</div>
+
+			<div>
+				<input type="submit" value="Upload" class="upload-btn">
+			</div>
+		</form>
+		<form enctype="multipart/form-data" method="post">
 			<div>
 				<input type="text" id="course-name" name="course-name" placeholder="ex-COMP3015">
-				<input type="submit" name="submit" value="ADD" class="add-btn btn btn-info" /><br />
+				<input type="submit" name="add" value="ADD" class="add-btn btn-info" /><br />
+				<?php
+				echo "$error";
+				?>
 			</div>
 		</form>
 	</div>
 	<table>
     <?php foreach($courses as $key=>$course): ?>
     <tr>
-      <td id="course_list">
-				<input type="checkbox" name="checkboxes" value="false">
-				<span id="editable"><?= $key; ?></span>
-				<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>
-				<!-- <input type="button" class="delete-btn" name="delete-btn" value="DELETE"> -->
-			</td>
+    	<td id="course_list">
+			<input type="checkbox" name="checkboxes[]" id="cbox"><label class="strikethrough">
+			<span id="editable" name="new-course-name"><?= $key; ?></span></label>
+			<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>			
+		</td>
     </tr>
-    <?php endforeach; 
-		// if($_POST["course-name"] != $key)  
-		// {  
-		// 	$current_data = file_get_contents('courses.json');  
-		// 	$array_data = json_decode($current_data, true);  
-
-		// 	$array_data[$_POST["course-name"]] = $key;
-		// 	$final_data = json_encode($array_data, JSON_PRETTY_PRINT);
-		// 	file_put_contents('courses.json', $final_data);   
-		// }  
-		?>
+    <?php endforeach;?>
 	</table>
 </body>
 
@@ -190,11 +205,6 @@ function removeList() {
   var row = document.getElementById('course_list');
   if (row) {
     row.parentNode.removeChild(row);
-		<?php
-				$current_data = file_get_contents('courses.json');  
-				$array_data = json_decode($current_data, true);  
-		
-		?>
   }
 }
 </script>
