@@ -151,7 +151,7 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 <body>
 	<div>
 		<!-- MUST POST -->
-		<form enctype="multipart/form-data" action="lab5/results.php" method="post">
+		<form enctype="multipart/form-data" action="lab5/cover_picture.php" method="post">
 			<div>
 				<label for="">Cover Picture</label>
 				<!-- input type MUST file -->
