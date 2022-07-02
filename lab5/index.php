@@ -156,12 +156,10 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 				<label for="">Cover Picture</label>
 				<!-- input type MUST file -->
 				<input type="file" name="cover_picture">
-			</div>
-
-			<div>
 				<input type="submit" value="Upload" class="upload-btn">
 			</div>
 		</form>
+		<br/>
 		<form enctype="multipart/form-data" method="post">
 			<div>
 				<input type="text" id="course-name" name="course-name" placeholder="ex-COMP3015">
@@ -176,9 +174,14 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
     <?php foreach($courses as $key=>$course): ?>
     <tr>
     	<td id="course_list">
-			<input type="checkbox" name="checkboxes[]" id="cbox"><label class="strikethrough">
-			<span id="editable" name="new-course-name"><?= $key; ?></span></label>
-			<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>			
+			<form action="lab5/complete.php" method="POST">
+				<input type="hidden" name="courseName" value="<?php echo $key ?>">
+				<input type="checkbox" name="status" id="cbox" <?php echo($course['completed'] ? 'checked' : '') ?>>
+				<label class="strikethrough">
+				<span id="editable" name="new-course-name"><?= $key; ?></span>
+				</label>
+				<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>			
+			</form>
 		</td>
     </tr>
     <?php endforeach;?>
@@ -207,4 +210,10 @@ function removeList() {
     row.parentNode.removeChild(row);
   }
 }
+
+document.querySelectorAll('input[name="status"]').forEach(function(item){
+	item.onlclick=function(){
+		document.getElementById('complete').submit();
+	}
+});
 </script>
