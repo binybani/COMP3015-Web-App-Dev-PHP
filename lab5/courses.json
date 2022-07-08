@@ -1,20 +1,24 @@
 {
-    "COMP3015 PHP": {
-        "completed": true
-    },
-    "COMP3012 Node": {
-        "completed": false
-    },
-    "COMP 7404 Artificial Intelligence": {
-        "completed": false
-    },
-    "COMP 8505": {
-        "completed": false
-    },
-    "COMP 7006": {
-        "completed": true
-    },
-    "COMP 1409": {
-        "completed": false
-    }
+    "database": [
+        {
+            "courseTitle": "COMP3012 Node.js",
+            "completed": false
+        },
+        {
+            "courseTitle": "COMP3015 PHP",
+            "completed": false
+        },
+        {
+            "courseTitle": "COMP 7404 Artificial Intelligence",
+            "completed": false
+        },
+        {
+            "courseTitle": "COMP 1409",
+            "completed": true
+        },
+        {
+            "courseTitle": "COMP 7006",
+            "completed": false
+        }
+    ]
 }

@@ -1,36 +1,5 @@
 <?php 
- $error = '';  
- if(isset($_POST["add"]))  
- {  
-	if(empty($_POST["course-name"]))  
-	{  
-		$error = "<label class='text-danger'>Enter Course Name!!</label>";  
-	} 
-	else {
-	if(file_exists('courses.json'))  
-	{  
-		$current_data = file_get_contents('courses.json');  
-		$array_data = json_decode($current_data, true);  
-		$extra = array(
-			'completed' => false,
-		);  
-		$array_data[$_POST["course-name"]] = $extra;
-		$final_data = json_encode($array_data, JSON_PRETTY_PRINT);
-		file_put_contents('courses.json', $final_data);   
-	}  
-	else  
-	{  
-		$error = 'JSON File not exits';  
-	}  
-	}
-}
 $courses = json_decode(file_get_contents('./courses.json'), true);
-// if(isset($_POST["checkboxes"]))
-// {
-// 	echo "checked";
-// } else {
-// 	echo "unchecked";
-// }
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +33,7 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 			padding-left: 10px;
 		}
 
-		.add-btn, .upload-btn {
+		.add-btn, .upload-btn, #updateButton {
 			background-color: #000000;
 			border: none;
 			color: white;
@@ -151,7 +120,7 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 <body>
 	<div>
 		<!-- MUST POST -->
-		<form enctype="multipart/form-data" action="lab5/cover_picture.php" method="post">
+		<form enctype="multipart/form-data" action="cover_picture.php" method="post">
 			<div>
 				<label for="">Cover Picture</label>
 				<!-- input type MUST file -->
@@ -160,50 +129,90 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 			</div>
 		</form>
 		<br/>
-		<form enctype="multipart/form-data" method="post">
+		<form enctype="multipart/form-data" action="addCourse.php" method="post">
 			<div>
-				<input type="text" id="course-name" name="course-name" placeholder="ex-COMP3015">
+				<input type="text" id="courseName" name="courseName" placeholder="ex-COMP3015">
 				<input type="submit" name="add" value="ADD" class="add-btn btn-info" /><br />
-				<?php
-				echo "$error";
-				?>
 			</div>
 		</form>
 	</div>
-	<table>
-    <?php foreach($courses as $key=>$course): ?>
-    <tr>
-    	<td id="course_list">
-			<form action="lab5/complete.php" method="POST">
-				<input type="hidden" name="courseName" value="<?php echo $key ?>">
-				<input type="checkbox" name="status" id="cbox" <?php echo($course['completed'] ? 'checked' : '') ?>>
+	<div>
+		<!-- Loop through each of the courses -->
+    <?php foreach($courses["database"] as $key=>$course): ?>
+    
+    <div id="course_list">
+			<!-- Checkbox Form -->
+			<form style="display: inline" action="complete.php" method="post" id="complete">
+				<input type="hidden" name="courseName" value="<?= $course["courseTitle"] ?>">
+				<input type="checkbox" name="status" id="cbox" value="1" <?= $course['completed'] ? 'checked' : '' ?>>
+				<!-- Editable Course Title  -->
 				<label class="strikethrough">
-				<span id="editable" name="new-course-name"><?= $key; ?></span>
+					<span class="courseTitle" data-originalcoursename="<?= $course["courseTitle"] ?>" contentEditable="true">
+						<?php echo $course["courseTitle"] ?>
+					</span>
+					<!-- Editable Course Title  -->
 				</label>
-				<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>			
 			</form>
-		</td>
-    </tr>
+			<!-- Checkbox Form End  -->
+
+			<!-- Delete Button Form  -->
+			<form style="display: inline" action="delete.php" method="post">
+				<input type="hidden" name="courseName" value="<?= $course["courseTitle"] ?>">
+				<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>
+			</form>
+			<!-- Delete Button Form End  -->
+		</div>
     <?php endforeach;?>
-	</table>
+		<!-- Update Button Form  -->
+		<form style="display: none;" id="updateForm" action="updateCourse.php" method="post">
+      <input type="hidden" name="courseName" value="<?= $course["courseTitle"] ?>">
+      <button id="updateButton">Update</button>
+    </form>
+    <!-- Update Button Form End  -->
+	</div>
 </body>
 
 </html>
 <script>
-document.querySelectorAll("#editable").forEach(function(node){
-	node.ondblclick=function(){
-		var val=this.innerHTML;
-		var input=document.createElement("input");
-		input.value=val;
-		input.onblur=function(){
-			var val=this.value;
-			this.parentNode.innerHTML=val;
-		}
-		this.innerHTML="";
-		this.appendChild(input);
-		input.focus();
+const checkboxes = document.querySelectorAll('input[type=checkbox]');
+checkboxes.forEach(ch => {
+	ch.onclick = function() {
+		this.parentNode.submit()
+	};
+})
+
+document.querySelectorAll('input[name="status"]').forEach(function(item){
+	item.onlclick=function(){
+		document.getElementById('complete').submit();
 	}
 });
+
+/* CODE TO HANDLE EDITING TITLES */
+const editedCourses = [];
+const editableCourseTitles = document.querySelectorAll('.courseTitle');
+const updateButton = document.querySelector('#updateButton');
+
+// Event Handler for when you click out of content-editable
+editableCourseTitles.forEach(course => course.addEventListener("blur", (e) => {
+	const updateForm = document.querySelector('#updateForm');
+	updateForm.style.display = "block";
+	editedCourses.push({
+		"originalCourseTitle": e.target.getAttribute("data-originalcoursename"),
+		"newCourseTitle": e.target.innerText
+	});
+}));
+
+// Event Handler for when you click on the update button
+updateButton.addEventListener("click", async () => {
+	const response = await fetch('/updateCourse.php', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(editedCourses)
+	});
+});
+
 function removeList() {
   var row = document.getElementById('course_list');
   if (row) {
@@ -211,9 +220,4 @@ function removeList() {
   }
 }
 
-document.querySelectorAll('input[name="status"]').forEach(function(item){
-	item.onlclick=function(){
-		document.getElementById('complete').submit();
-	}
-});
 </script>
