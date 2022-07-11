@@ -1,0 +1,24 @@
+{
+    "database": [
+        {
+            "courseTitle": "COMP3012 Node.js",
+            "completed": false
+        },
+        {
+            "courseTitle": "COMP3015 PHP",
+            "completed": false
+        },
+        {
+            "courseTitle": "COMP 7404 Artificial Intelligence",
+            "completed": false
+        },
+        {
+            "courseTitle": "COMP 1409",
+            "completed": true
+        },
+        {
+            "courseTitle": "COMP 7006",
+            "completed": false
+        }
+    ]
+}

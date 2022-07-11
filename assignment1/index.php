@@ -138,9 +138,9 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 	</div>
 	<div>
 		<!-- Loop through each of the courses -->
-    	<?php foreach($courses["database"] as $key=>$course): ?>
+    <?php foreach($courses["database"] as $key=>$course): ?>
     
-    	<div id="course_list">
+    <div id="course_list">
 			<!-- Checkbox Form -->
 			<form style="display: inline" action="complete.php" method="post" id="complete">
 				<input type="hidden" name="courseName" value="<?= $course["courseTitle"] ?>">
@@ -162,14 +162,13 @@ $courses = json_decode(file_get_contents('./courses.json'), true);
 			</form>
 			<!-- Delete Button Form End  -->
 		</div>
-		<?php endforeach;?>
-		
+    <?php endforeach;?>
 		<!-- Update Button Form  -->
 		<form style="display: none;" id="updateForm" action="updateCourse.php" method="post">
-		<input type="hidden" name="courseName" value="<?= $course["courseTitle"] ?>">
-		<button id="updateButton">Update</button>
-		</form>
-		<!-- Update Button Form End  -->
+      <input type="hidden" name="courseName" value="<?= $course["courseTitle"] ?>">
+      <button id="updateButton">Update</button>
+    </form>
+    <!-- Update Button Form End  -->
 	</div>
 </body>
 
@@ -205,7 +204,7 @@ editableCourseTitles.forEach(course => course.addEventListener("blur", (e) => {
 
 // Event Handler for when you click on the update button
 updateButton.addEventListener("click", async () => {
-	const response = await fetch('updateCourse.php', {
+	const response = await fetch('/updateCourse.php', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
