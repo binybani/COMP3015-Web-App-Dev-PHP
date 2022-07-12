@@ -14,7 +14,7 @@ if(!isset($_SESSION))
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/daisyui@2.17.0/dist/full.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>My Site</title>
+  <title>Course Manager</title>
 </head>
 <body>
 
@@ -40,9 +40,9 @@ if(!isset($_SESSION))
   <div class="navbar-end">
     <?php 
       if(isset($_SESSION["userId"])) {
-        echo '<a href="/pages/login/logout.php" class="btn btn-primary">Logout</a>';
+        echo '<a href="/src/logout.php" class="btn btn-primary">Logout</a>';
       } else {
-        echo '<a href="/pages/login/login.php" class="btn btn-primary">Login</a>';
+        echo '<a href="/src/login.php" class="btn btn-primary">Login</a>';
       }
     ?>
   </div>
