@@ -39,4 +39,10 @@ class CourseRepository extends Repository {
 		return $sqlStatement->execute();
 	}
 
+	public function deleteCourse(string $title, int $user_id): bool {
+		$sqlStatement = $this->mysqlConnection->prepare("DELETE FROM courses VALUES(NULL, ?, ?, ?)");
+		$sqlStatement->bind_param('ssi', $title, $user_id);
+		return $sqlStatement->execute();
+	}
+
 }
