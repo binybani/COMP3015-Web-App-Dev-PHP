@@ -52,7 +52,7 @@ if (isset($_SESSION['user_id'])) {
 				<span class="font-extrabold"><?php echo count($courses) === 0 ? 'No courses yet.' : 'Your Courses:' ?></span>
 				<!-- Loop through each of the courses -->
 				<?php foreach ($courses as $course): ?>
-					<li class="py-4 flex" id="course_list">
+					<div class="py-4 flex" id="course_list">
 						<div class="ml-3">
 							<!-- Checkbox Form -->
 							<form style="display: inline" action="complete.php" method="POST" id="complete">
@@ -74,7 +74,7 @@ if (isset($_SESSION['user_id'])) {
 							<button class="delete-btn" name="delete-btn" value="DELETE" onclick='removeList();'>DELETE</button>
 						</form>
 						<!-- Delete Button Form End  -->
-					</li>
+					</div>
 				<?php endforeach; ?>
 			</ul>
 		</div>

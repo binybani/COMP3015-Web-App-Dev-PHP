@@ -6,6 +6,11 @@ require_once 'Repositories/UserRepository.php';
 use src\Repositories\CourseRepository;
 use src\Repositories\UserRepository;
 
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$title = $_POST['title'];
 	$is_completed = false;
