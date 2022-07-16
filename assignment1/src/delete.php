@@ -12,7 +12,6 @@ if(!isset($_SESSION))
 } 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	echo "testtest";
 	$title = $_POST['courseName'];
 	$userId = $_SESSION['user_id'];
 	$authenticatedUser = (new UserRepository())->getUserById($userId);

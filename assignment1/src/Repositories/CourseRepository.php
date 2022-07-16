@@ -45,4 +45,16 @@ class CourseRepository extends Repository {
 		return $sqlStatement->execute();
 	}
 
+	public function completed(int $is_completed, int $user_id): bool {
+		$sqlStatement = $this->mysqlConnection->prepare("UPDATE courses SET is_completed= ? WHERE is_completed = ?");
+		$sqlStatement->bind_param('ii', $is_completed, $is_completed);
+		return $sqlStatement->execute();
+	}
+
+	public function updateTitle(string $title, int $user_id): bool {
+		$sqlStatement = $this->mysqlConnection->prepare("UPDATE courses SET title=? WHERE title != ? ");
+		$sqlStatement->bind_param('ss', $title, $title);
+		return $sqlStatement->execute();
+	}
+
 }
