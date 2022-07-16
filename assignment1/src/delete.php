@@ -12,16 +12,16 @@ if(!isset($_SESSION))
 } 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$title = $_POST['title'];
-	$is_completed = false;
+	echo "testtest";
+	$title = $_POST['courseName'];
 	$userId = $_SESSION['user_id'];
 	$authenticatedUser = (new UserRepository())->getUserById($userId);
-	$course = (new CourseRepository())->saveCourse($title, $is_completed, $authenticatedUser->id);
+	$course = (new CourseRepository())->deleteCourse($title, $authenticatedUser->id);
 	if ($course) {
 		header('Location: courses.php');
 	} else {
-		$_SESSION['error_message'] = 'Error creating course';
-		header('Location: addCourse.php');
+		$_SESSION['error_message'] = 'Error deleting course';
+		header('Location: delete.php');
 	}
 	exit(0);
 }

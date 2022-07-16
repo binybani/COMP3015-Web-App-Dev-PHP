@@ -35,7 +35,13 @@ class CourseRepository extends Repository {
 	 */
 	public function saveCourse(string $title, bool $is_completed, int $user_id): bool {
 		$sqlStatement = $this->mysqlConnection->prepare("INSERT INTO courses VALUES(NULL, ?, ?, ?)");
-		$sqlStatement->bind_param('ssi', $title, $is_completed, $user_id);
+		$sqlStatement->bind_param('sii', $title, $is_completed, $user_id);
+		return $sqlStatement->execute();
+	}
+
+	public function deleteCourse(string $title, int $user_id): bool {
+		$sqlStatement = $this->mysqlConnection->prepare("DELETE FROM courses WHERE title= ? ");
+		$sqlStatement->bind_param('s', $title);
 		return $sqlStatement->execute();
 	}
 

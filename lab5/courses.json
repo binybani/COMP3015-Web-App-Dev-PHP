@@ -1,16 +1,12 @@
 {
     "database": [
         {
-            "courseTitle": "COMP301211 Node.js",
-            "completed": false
-        },
-        {
-            "courseTitle": "PHP 12345\u00a0 \u00a0 \u00a0\u00a0 ",
-            "completed": false
+            "courseTitle": "COMP3012 Node.js",
+            "completed": true
         },
         {
             "courseTitle": "COMP 7404 Artificial Intelligence",
-            "completed": true
+            "completed": false
         }
     ]
 }
