@@ -96,12 +96,6 @@ checkboxes.forEach(ch => {
 	};
 })
 
-document.querySelectorAll('input[name="status"]').forEach(function(item){
-	item.onlclick=function(){
-		document.getElementById('complete').submit();
-	}
-});
-
 /* CODE TO HANDLE EDITING TITLES */
 const editedCourses = [];
 const editableCourseTitles = document.querySelectorAll('.courseTitle');
